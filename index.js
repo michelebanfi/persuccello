@@ -1,11 +1,18 @@
 const { Telegraf, Markup } = require("telegraf");
-const bot = new Telegraf("5352015609:AAEZu030n48m9XD_wFamFgdu6IYjTNQ8wCo");
+require("dotenv").config();
+
+const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.command("sium", (ctx) => {
   //ctx.reply(ctx.message.text.substring(5));
   ctx.reply(
     "keyboard",
-    Markup.inlineKeyboard(Markup.button.webApp(`open`, "url"))
+    Markup.inlineKeyboard([
+      Markup.button.webApp(
+        `open`,
+        "https://michelebanfi.github.io/persuccello/index.html"
+      ),
+    ])
   );
 });
 
