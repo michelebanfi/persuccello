@@ -11,11 +11,11 @@
       const coin = window.location.search.substring(1);
       console.log(coin);
       fetch(
-        `https://www.binance.com/api/v3/klines?limit=100&symbol=${coin}USDT&interval=1m`
+        `https://www.binance.com/api/v3/klines?limit=1000&symbol=${coin}USDT&interval=1m`
       )
         .then((resp) => resp.text())
         .then((data) => {
-          console.log("data retrieved");
+          data = JSON.parse(data);
 
           const width = 600;
           const height = 300;
