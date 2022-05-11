@@ -6,8 +6,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>sium</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <script>
+      const coin = window.location.search.substring(1);
+      console.log(coin);
+      fetch(
+        `https://www.binance.com/api/v3/klines?limit=100&symbol=${coin}USDT&interval=1m`
+      )
+        .then((resp) => resp.text())
+        .then((data) => {
+          console.log("data retrieved");
+
+          const width = 600;
+          const height = 300;
+
+          var container = document.createElement("div");
+          document.body.appendChild(container);
+
+          var chart = (window.tvchart = LightweightCharts.createChart(
+            container,
+            {
+              width: width,
+              height: height,
+              rightPriceScale: {
+                scaleMargins: {
+                  top: 0.35,
+                  bottom: 0.2,
+                },
+                borderVisible: false,
+              },
+              timeScale: {
+                borderVisible: false,
+              },
+              grid: {
+                horzLines: {
+                  color: "#eee",
+                  visible: false,
+                },
+                vertLines: {
+                  color: "#ffffff",
+                },
+              },
+              crosshair: {
+                horzLine: {
+                  visible: false,
+                  labelVisible: false,
+                },
+                vertLine: {
+                  visible: true,
+                  style: 0,
+                  width: 2,
+                  color: "rgba(32, 38, 46, 0.1)",
+                  labelVisible: false,
+                },
+              },
+            }
+          ));
+          var series = chart.addAreaSeries({
+            topColor: "rgba(19, 68, 193, 0.4)",
+            bottomColor: "rgba(0, 120, 255, 0.0)",
+            lineColor: "rgba(19, 40, 153, 1.0)",
+            lineWidth: 3,
+          });
+
+          const x = data.map((item) => ({ time: item[0], value: item[4] }));
+
+          series.setData(x);
+        });
+    </script>
   </head>
-  <body>
-    <p>prova</p>
-  </body>
+  <body></body>
 </html>
