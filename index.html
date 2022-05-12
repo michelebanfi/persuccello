@@ -17,8 +17,8 @@
         .then((data) => {
           data = JSON.parse(data);
 
-          const width = 600;
-          const height = 300;
+          const width = window.innerWidth;
+          const height = window.innerHeight * 0.8;
 
           var container = document.createElement("div");
           document.body.appendChild(container);
@@ -72,8 +72,49 @@
           const x = data.map((item) => ({ time: item[0], value: item[4] }));
 
           series.setData(x);
+
+          function setLastBarText() {
+            var dateStr =
+              data[data.length - 1].time.year +
+              " - " +
+              data[data.length - 1].time.month +
+              " - " +
+              data[data.length - 1].time.day;
+            toolTip.innerHTML =
+              '<div style="font-size: 24px; margin: 4px 0px; color: #20262E"> AEROSPACE</div>' +
+              '<div style="font-size: 22px; margin: 4px 0px; color: #20262E">' +
+              data[data.length - 1].value +
+              "</div>" +
+              "<div>" +
+              dateStr +
+              "</div>";
+          }
+
+          setLastBarText();
         });
     </script>
+    <style>
+      html,
+      body {
+        font-family: "Trebuchet MS", Roboto, Ubuntu, sans-serif;
+        background: #f9fafb;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .three-line-legend {
+        width: 96px;
+        height: 70px;
+        position: absolute;
+        padding: 8px;
+        font-size: 12px;
+        color: "#20262E";
+        background-color: rgba(255, 255, 255, 0.23);
+        text-align: left;
+        z-index: 1000;
+        pointer-events: none;
+      }
+    </style>
   </head>
-  <body></body>
+  <body style="background-color: white"></body>
 </html>
