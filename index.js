@@ -6,10 +6,10 @@ const bot = new Telegraf("process.env.BOT_TOKEN");
 
 bot.command("sium", (ctx) => {
   //ctx.reply(ctx.message.text.substring(5));
-  const coin = ctx.message.text.substring(5);
+  const coin = ctx.message.text.substring(6);
   console.log(coin);
   ctx.reply(
-    "🪙",
+    "🗺",
     Markup.inlineKeyboard([
       Markup.button.webApp(
         coin,
