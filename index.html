@@ -10,6 +10,7 @@
     <script>
       const coin = window.location.search.substring(1);
       console.log(coin);
+      document.write(coin);
       fetch(
         `https://www.binance.com/api/v3/klines?limit=1000&symbol=${coin}USDT&interval=1m`
       )
