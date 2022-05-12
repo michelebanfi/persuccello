@@ -8,6 +8,9 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <script>
+      let data = [];
+      let chart = {};
+      let series = null;
       function sium(timeframe) {
         const coin = window.location.search.substring(1);
 
@@ -15,7 +18,7 @@
           `https://www.binance.com/api/v3/klines?limit=1000&symbol=${coin}USDT&interval=${timeframe}`
         )
           .then((resp) => resp.text())
-          .then((data) => {
+          .then((datap) => {
             if (document.getElementById("coin") === null) {
               const p = document.createElement("p");
               p.id = "coin";
@@ -27,62 +30,64 @@
               div.id = "sium";
               document.body.appendChild(div);
             }
-            data = JSON.parse(data);
 
-            const width = window.innerWidth;
-            const height = window.innerHeight * 0.8;
+            data = JSON.parse(datap);
+            data = data.map((item) => ({ time: item[0], value: item[4] }));
 
-            var container = document.getElementById("sium");
+            if (series === null) {
+              const width = window.innerWidth;
+              const height = window.innerHeight * 0.8;
 
-            var chart = (window.tvchart = LightweightCharts.createChart(
-              container,
-              {
-                width: width,
-                height: height,
-                rightPriceScale: {
-                  scaleMargins: {
-                    top: 0.35,
-                    bottom: 0.2,
-                  },
-                  borderVisible: false,
-                },
-                timeScale: {
-                  borderVisible: false,
-                },
-                grid: {
-                  horzLines: {
-                    color: "#eee",
-                    visible: false,
-                  },
-                  vertLines: {
-                    color: "#ffffff",
-                  },
-                },
-                crosshair: {
-                  horzLine: {
-                    visible: false,
-                    labelVisible: false,
-                  },
-                  vertLine: {
-                    visible: true,
-                    style: 0,
-                    width: 2,
-                    color: "rgba(32, 38, 46, 0.1)",
-                    labelVisible: false,
-                  },
-                },
-              }
-            ));
-            var series = chart.addAreaSeries({
-              topColor: "rgba(19, 68, 193, 0.4)",
-              bottomColor: "rgba(0, 120, 255, 0.0)",
-              lineColor: "rgba(19, 40, 153, 1.0)",
-              lineWidth: 3,
-            });
+              var container = document.getElementById("sium");
 
-            const x = data.map((item) => ({ time: item[0], value: item[4] }));
+              chart = window.tvchart = LightweightCharts.createChart(
+                container,
+                {
+                  width: width,
+                  height: height,
+                  rightPriceScale: {
+                    scaleMargins: {
+                      top: 0.35,
+                      bottom: 0.2,
+                    },
+                    borderVisible: false,
+                  },
+                  timeScale: {
+                    borderVisible: false,
+                  },
+                  grid: {
+                    horzLines: {
+                      color: "#eee",
+                      visible: false,
+                    },
+                    vertLines: {
+                      color: "#ffffff",
+                    },
+                  },
+                  crosshair: {
+                    horzLine: {
+                      visible: false,
+                      labelVisible: false,
+                    },
+                    vertLine: {
+                      visible: true,
+                      style: 0,
+                      width: 2,
+                      color: "rgba(32, 38, 46, 0.1)",
+                      labelVisible: false,
+                    },
+                  },
+                }
+              );
+              series = chart.addAreaSeries({
+                topColor: "rgba(19, 68, 193, 0.4)",
+                bottomColor: "rgba(0, 120, 255, 0.0)",
+                lineColor: "rgba(19, 40, 153, 1.0)",
+                lineWidth: 3,
+              });
+            }
 
-            series.setData(x);
+            series.setData(data);
           });
       }
       sium("1m");
@@ -143,16 +148,6 @@
         type="radio"
         class="btn-check"
         name="btnradio"
-        id="btnradio2"
-        autocomplete="off"
-        onchange="sium('3m')"
-      />
-      <label class="btn btn-outline-primary" for="btnradio2">3m</label>
-
-      <input
-        type="radio"
-        class="btn-check"
-        name="btnradio"
         id="btnradio3"
         autocomplete="off"
         onchange="sium('5m')"
@@ -178,16 +173,6 @@
         onchange="sium('1h')"
       />
       <label class="btn btn-outline-primary" for="btnradio5">1h</label>
-
-      <input
-        type="radio"
-        class="btn-check"
-        name="btnradio"
-        id="btnradio6"
-        autocomplete="off"
-        onchange="sium('2h')"
-      />
-      <label class="btn btn-outline-primary" for="btnradio6">2h</label>
       <input
         type="radio"
         class="btn-check"
@@ -203,60 +188,11 @@
         type="radio"
         class="btn-check"
         name="btnradio"
-        id="btnradio8"
-        autocomplete="off"
-        onchange="sium('6h')"
-      />
-      <label class="btn btn-outline-primary" for="btnradio8">6h</label>
-
-      <input
-        type="radio"
-        class="btn-check"
-        name="btnradio"
-        id="btnradio9"
-        autocomplete="off"
-        onchange="sium('8h')"
-      />
-      <label class="btn btn-outline-primary" for="btnradio9">8h</label>
-      <input
-        type="radio"
-        class="btn-check"
-        name="btnradio"
-        id="btnradio10"
-        autocomplete="off"
-        checked
-        onchange="sium('12h')"
-      />
-      <label class="btn btn-outline-primary" for="btnradio10">12h</label>
-
-      <input
-        type="radio"
-        class="btn-check"
-        name="btnradio"
         id="btnradio11"
         autocomplete="off"
         onchange="sium('1d')"
       />
       <label class="btn btn-outline-primary" for="btnradio11">1d</label>
-
-      <input
-        type="radio"
-        class="btn-check"
-        name="btnradio"
-        id="btnradio12"
-        autocomplete="off"
-      />
-      <label class="btn btn-outline-primary" for="btnradio12">3d</label>
-      <input
-        type="radio"
-        class="btn-check"
-        name="btnradio"
-        id="btnradio13"
-        autocomplete="off"
-        checked
-        onchange="sium('1w')"
-      />
-      <label class="btn btn-outline-primary" for="btnradio13">1w</label>
 
       <input
         type="radio"
